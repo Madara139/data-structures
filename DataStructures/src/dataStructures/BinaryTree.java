@@ -30,23 +30,73 @@ public class BinaryTree {
         if (raiz == null) 
             raiz = new NodeB (dato);
         else
-            insert (raiz, dato);
+            raiz = insert (raiz, dato);
     }
     
     private NodeB insert(NodeB nodo, int dato) {
-        if (nodo == null) {
+        if (nodo == null) { //caso base
             nodo = new NodeB (dato);
             return nodo;
         } else if (dato < nodo.dato)
             nodo.izq = insert (nodo.izq, dato);
         else if (dato > nodo.dato)
             nodo.der = insert (nodo.der, dato);
+        return nodo;//regresa nodo no cambiado
+    }
+    
+    public void delete (int dato) {
+        raiz = delete (raiz, dato);
+    }
+
+    private NodeB delete(NodeB nodo, int dato) {
+        if (nodo == null) //caso base
+            return nodo;
+        if (dato < nodo.dato)
+            nodo.izq = delete (nodo.izq, dato);
+        else if (dato > nodo.dato)
+            nodo.der = delete (nodo.der, dato);
+        else {//nodo a eliminar
+            if (nodo.izq == null)//caso 1 hijo der
+                return nodo.der;
+            else if (nodo.der == null) //caso 2 hijo izq, caso 3 hoja
+                return nodo.izq;
+            //caso 4 dos hijos
+            //como hay dos hijos tomo el minimo del subarbol der
+            //y cambio el valor del nodo a eliminar por el minimo
+            nodo.dato = valorMinimo(nodo.der);
+            //ahora el nodo esta duplicado entonces continuo por la derecha
+            //hasta encontrar el duplicado (minimo original) que al ser minimo 
+            //solo tendra 1 o 0 hijos y sera eliminado mas facilmente
+            nodo.der = delete(nodo.der, nodo.dato);
+        }
         return nodo;
     }
     
+    private int valorMinimo (NodeB nodo) { //la funcion encuentra el valor mini
+        //mo del subarbol der
+        int minimo = nodo.dato;
+        while (nodo.izq != null) {
+            minimo = nodo.izq.dato;
+            nodo = nodo.izq;
+        }
+        return minimo;
+    }
     
-    
-    
+    public void inorder() 
+    { 
+        inorder(raiz); 
+    } 
+  
+    private void inorder(NodeB nodo) 
+    { 
+        if (nodo != null) 
+        { 
+            inorder(nodo.izq); 
+            System.out.print(nodo.dato + " "); 
+            inorder(nodo.der); 
+        } 
+    } 
+  
 }
 
     
