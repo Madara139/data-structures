@@ -18,15 +18,15 @@ package dataStructures;
 public class BinaryTree {
     public NodeB raiz;
     
-    public BinaryTree (){
+    public BinaryTree(){
         raiz = null;
     }
     
-    public BinaryTree (int dato) {
+    public BinaryTree(int dato) {
         raiz = new NodeB (dato);
     }
     
-    public void insert (int dato) {
+    public void insert(int dato) {
         if (raiz == null) 
             raiz = new NodeB (dato);
         else
@@ -44,7 +44,7 @@ public class BinaryTree {
         return nodo;//regresa nodo no cambiado
     }
     
-    public void delete (int dato) {
+    public void delete(int dato) {
         raiz = delete (raiz, dato);
     }
 
@@ -72,7 +72,7 @@ public class BinaryTree {
         return nodo;
     }
     
-    private int valorMinimo (NodeB nodo) { //la funcion encuentra el valor mini
+    private int valorMinimo(NodeB nodo) { //la funcion encuentra el valor mini
         //mo del subarbol der
         int minimo = nodo.dato;
         while (nodo.izq != null) {
@@ -97,7 +97,7 @@ public class BinaryTree {
         } 
     } 
   
-    public boolean search (int dato) {
+    public boolean search(int dato) {
         if (raiz == null) 
             return false;
         else 

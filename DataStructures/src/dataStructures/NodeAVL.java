@@ -8,15 +8,15 @@ package dataStructures;
 /**
  *
  * @author juanh
- * clase nodo para arbol binario normal, solo usa enteros
  */
-public class NodeB {
-    public int dato;
-    public NodeB izq, der;
+public class NodeAVL {
+    public int dato, altura;
+    public NodeAVL izq, der;
     
-    public NodeB(int dato) {
+    public NodeAVL(int dato) {
         this.dato = dato;
         izq = der = null;
+        altura = 1;
     }
 
     public int getDato() {
@@ -27,6 +27,4 @@ public class NodeB {
     public String toString() {
         return dato + "";
     }
-    
-    
 }
