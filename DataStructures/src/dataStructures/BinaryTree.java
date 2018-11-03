@@ -97,6 +97,21 @@ public class BinaryTree {
         } 
     } 
   
-}
+    public boolean search (int dato) {
+        if (raiz == null) 
+            return false;
+        else 
+            return search (raiz, dato);
+    }
 
-    
+    private boolean search(NodeB nodo, int dato) {
+        if (nodo == null)
+            return false;
+        else if (dato < nodo.dato)
+            return search (nodo.izq, dato);
+        else if (dato > nodo.dato)
+            return search (nodo.der, dato);
+        else 
+            return true;
+    }
+}
