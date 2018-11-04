@@ -12,10 +12,10 @@ package dataStructures;
 public class AVLTree {
      public NodeAVL raiz;
      
-     public int height(NodeAVL nodo) {//funcion que calcula altura de un arbol
-         if (nodo == null)
-             return 0;
-         return nodo.altura;
+     public int height(NodeAVL N) {//funcion que calcula altura de un arbol
+         if (N != null)
+             return N.altura;
+         return 0;
      }
      
      public int max(int a, int b) {//funcion que da el maximo de 2 enteros
@@ -33,7 +33,7 @@ public class AVLTree {
          y.izq = t2;
          
          //actualizacion de alturas
-        x.altura = max (height(x.der), height(x.izq)) + 1;
+        x.altura = max (height(x.izq), height(x.der)) + 1;
         y.altura = max (height(y.izq), height(y.der)) + 1;
          
          //nueva raiz del subarbol
@@ -51,42 +51,37 @@ public class AVLTree {
          x.der = t2;
          
          //actualizacion de alturas
-         x.altura = max (height(x.der), height(x.izq)) + 1;
+         x.altura = max (height(x.izq), height(x.der)) + 1;
          y.altura = max (height(y.izq), height(y.der)) + 1;
          
          //nueva raiz del subarbol
          return y;
      }
      
-     public int getBalance(NodeAVL nodo) {//funcion que da el factor de equilibrio
+     public int getBalance(NodeAVL N) {//funcion que da el factor de equilibrio
          //si es positivo significa cargado a la izq, negativo es a la derecha
-         if (nodo == null)
-             return 0;
-         return height(nodo.izq) - height(nodo.der);
+         if (N != null)
+             return (height(N.izq) - height(N.der));
+         return 0;
      }
      
-     public void insert (int dato) {
-        if (raiz==null)
-            raiz = new NodeAVL(dato);
-        else 
-            insert(raiz, dato);
+     public void insert (int dato) { 
+        raiz = insert(raiz, dato);
      }
 
     private NodeAVL insert(NodeAVL nodo, int dato) {
         //caso base
         if (nodo == null)
-            nodo = new NodeAVL (dato);
-        else if (dato < nodo.dato) //insercion como en binarySearchTree
+            return new NodeAVL (dato);
+        if (dato < nodo.dato) //insercion como en binarySearchTree
             nodo.izq = insert(nodo.izq, dato);
-        else if (dato > nodo.dato)
+        else
             nodo.der = insert(nodo.der, dato);
-        else //caso duplicado
-            return nodo;
+        
         //actualizacion de altura del nodo padre
         nodo.altura = max(height(nodo.izq), height(nodo.der)) + 1;
         //se verifica si el nodo padre esta desbalanceado
         int balance = getBalance(nodo);
-        
         // If this node becomes unbalanced, then there 
         // are 4 cases Left Left Case 
         if (balance > 1 && dato < nodo.izq.dato) 
@@ -139,4 +134,69 @@ public class AVLTree {
         } 
     } 
     
+    public void delete (int dato) {
+            raiz = delete (raiz, dato);
+    }
+
+    private NodeAVL delete(NodeAVL nodo, int dato) {
+        if (nodo == null)
+            return nodo;
+        if (dato < nodo.dato)
+            nodo.izq = delete(nodo.izq, dato);
+        else if (dato > nodo.dato)
+            nodo.der = delete(nodo.der, dato);
+        else {
+            if (nodo.izq == null) //caso 1 hijo der
+                return nodo.der;
+            else if (nodo.der == null) //caso 2 hijos o 1 hijo izq
+                return nodo.izq;
+            //caso 4 no hijos
+            nodo.dato = min(nodo.der);
+            nodo.der = delete(nodo.der, nodo.dato);
+        }
+        
+        if (nodo == null)  
+            return nodo;
+        //actualizo la altura
+        nodo.altura = max(height(nodo.der), height(nodo.izq)) + 1;
+        
+        //calculo factor de equilibrio
+        int balance = getBalance(nodo);
+        
+        
+        
+        // caso izq izq 
+        if (balance > 1 && getBalance(nodo.izq) >= 0)  
+            return rightRotate(nodo);  
+  
+        // caso izq der 
+        if (balance > 1 && getBalance(nodo.izq) < 0)  
+        {  
+            nodo.izq = leftRotate(nodo.izq);  
+            return rightRotate(nodo);  
+        }  
+  
+        // caso der der
+        if (balance < -1 && getBalance(nodo.der) <= 0)  
+            return leftRotate(nodo);  
+  
+        // caso der izq
+        if (balance < -1 && getBalance(nodo.der) > 0)  
+        {  
+            nodo.der = rightRotate(nodo.der);  
+            return leftRotate(nodo);  
+        }  
+  
+        return nodo;  
+    }
+    
+    private int min(NodeAVL nodo) { //la funcion encuentra el valor mini
+        //mo del subarbol der
+        int minimo = nodo.dato;
+        while (nodo.izq != null) {
+            minimo = nodo.izq.dato;
+            nodo = nodo.izq;
+        }
+        return minimo;
+    }
 }
