@@ -1,0 +1,89 @@
+import java.util.Scanner;
+
+/**
+ *
+ * @author juanh
+ */
+public class Aplicacion {
+    
+    private static String estados [] = {"Aguascalientes", "Baja-California", 
+        "Baja-California-Sur", "Campeche", "Coahuila", "Colima", "Chiapas", 
+        "Chihuahua", "Ciudad-De-Mexico", "Durango", "Guanajuato", "Guerrero",
+        "Hidalgo", "Jalisco", "Mexico", "Michoacan", "Morelos", "Nayarit",
+        "Nuevo-Leon", "Oaxaca", "Puebla", "Queretaro", "Quintana-Roo",
+        "San-Luis-Potosi", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas","Tlaxcala", "Veracruz",
+        "Yucatan", "Zacatecas"};
+    
+    static int distanciasEstados [][] = {
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,80,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,117}, //Aguascalientes
+        {0,0,1358,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,702,0,0,0,0,0,0}, //Baja California
+        {0,1356,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //Baja California Sur
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,418,0,0,0,382,0,0,0,186,0}, //Campeche
+        {0,0,0,0,0,0,0,721,0,505,0,0,0,0,0,0,0,0,87,0,0,0,0,446,0,0,0,0,0,0,0,382}, //Coahuila
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,196,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //Colima
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,539,0,0,0,0,0,0,246,0,0,655,0,0}, //Chiapas
+        {0,0,0,0,726,0,0,0,0,631,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,689,0,0,0,0,0,0}, //Chihuahua
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,63,0,93,0,0,0,131,0,0,0,0,0,0,0,0,0,0,0}, //Ciudad de Mexico
+        {0,0,0,0,513,0,0,630,0,0,0,0,0,0,0,0,0,467,0,0,0,0,0,0,461,0,0,0,0,0,0,288}, //Durango
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,290,0,177,0,0,0,0,0,123,0,206,0,0,0,0,0,0,0,0}, //guanajuato
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,186,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //guerrero
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,152,0,0,0,0,0,0,224,0,0,0,0,0,0,125,0,0,0}, //hidalgo
+        {221,0,0,0,0,195,0,0,0,0,292,0,0,0,0,288,0,208,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //jalisco
+        {0,0,0,0,0,0,0,0,64,0,0,0,174,0,0,235,141,0,0,0,0,195,0,0,0,0,0,0,0,0,0,0}, //mexico
+        {0,0,0,0,0,0,0,0,0,0,180,0,0,287,236,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //michoacan
+        {0,0,0,0,0,0,0,0,86,0,0,186,0,0,136,0,0,0,0,0,156,0,0,0,0,0,0,0,0,0,0,0}, //morelos
+        {0,0,0,0,0,0,0,0,0,466,0,0,0,207,0,0,0,0,0,0,0,0,0,0,480,0,0,0,0,0,0,0}, //nayarit
+        {0,0,0,0,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,515,0,0,0,284,0,0,0,0}, //nuevo leon
+        {0,0,0,0,0,0,540,0,0,0,0,0,0,0,0,0,0,0,0,0,339,0,0,0,0,0,0,0,0,424,0,0}, //oaxaca
+        {0,0,0,0,0,0,0,0,131,0,0,0,0,0,0,0,161,0,0,339,0,0,0,0,0,0,0,0,46,173,0,0}, //puebla
+        {0,0,0,0,0,0,0,0,0,0,128,0,223,0,198,189,0,0,0,0,0,0,0,211,0,0,0,0,0,0,0,0}, //queretaro
+        {0,0,0,417,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,383,0}, //quintana roo
+        {0,0,0,0,0,0,0,0,0,0,206,0,422,0,0,0,0,0,513,0,0,212,0,0,0,0,0,332,0,0,0,189}, //san luis potosi
+        {0,0,0,0,0,0,0,0,0,463,0,0,0,0,0,0,0,481,0,0,0,0,0,0,0,693,0,0,0,0,0,0}, //sinaloa
+        {0,696,0,0,0,0,0,689,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,694,0,0,0,0,0,0,0}, //sonora
+        {0,0,0,381,0,0,247,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,573,0,0}, //tabasco
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,284,0,0,0,0,332,0,0,0,0,0,681,0,0}, //tamaulipas
+        {0,0,0,0,0,0,0,0,120,0,0,0,125,0,0,0,0,0,0,0,46,0,0,0,0,0,0,0,0,0,0,0}, //tlaxcala
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,425,173,0,0,0,0,0,565,681,0,0,0,0}, //veracruz
+        {0,0,0,184,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,382,0,0,0,0,0,0,0,0,0}, //yucatan
+        {123,0,0,0,373,0,0,0,0,288,0,0,0,343,0,0,0,0,0,0,0,0,0,194,0,0,0,0,0,0,0,0}}; //zacatecas
+    
+    public static int numCiudad (String nombre) {
+        int i = 0;
+        while (!estados[i].equals(nombre))
+            i++;
+        return i;
+    }
+    
+    public static String ciudadNum (int clave) {
+        return estados[clave];
+    }
+    
+    public static void main(String[] args) {
+        
+        Scanner sc = new Scanner (System.in);
+        
+        System.out.println("Presione cualquier tecla para continuar o -1 "
+                + "para salir");
+        String resp = sc.next();
+        while (!resp.equals("-1")) {
+            System.out.println("Escriba el nombre de la ciudad origen: ");
+            resp = sc.next();
+            String origen = resp;
+            try {
+                int numOrigen = numCiudad (origen);
+                System.out.println("Escriba el nombre del destino: ");
+                resp = sc.next();
+                String destino = resp;
+                int numDestino = numCiudad(destino);
+                dijkstra(distanciasEstados, numOrigen, numDestino);
+            } catch (Exception e) {
+                System.out.println("Error, intentelo de nuevo");
+            }
+            System.out.println("\nPresione cualquier tecla para continuar o -1 "
+                    + "para salir");
+            resp = sc.next();
+        }
+
+    }
+}
