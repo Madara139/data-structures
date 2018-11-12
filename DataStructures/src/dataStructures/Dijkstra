@@ -1,0 +1,80 @@
+/**
+ *
+ * @author juanh
+ */
+public class Dijkstra {
+    private static final int NO_PADRE = -1; 
+  
+    //Funcion que implementa dijkstra para una grafica usando matriz de adyacencia
+    public static void dijkstra(int[][] matrizAdyacencia, int origen, int destino) { 
+        int nVertices = matrizAdyacencia[0].length; 
+  
+        // distancias[i] tendra la distancia mas corta del origen hasta i
+        int[] distancias = new int[nVertices]; 
+  
+        // agregados[i] sera verdadero si el vertice i esta incluido en la distancia mas corta del origen a i, en su arbol de min rec
+        boolean[] agregados = new boolean[nVertices]; 
+  
+        // inicia todo distancias como maximo y agregados como falso
+        for (int indiceVertice = 0; indiceVertice < nVertices; indiceVertice++) { 
+            distancias[indiceVertice] = Integer.MAX_VALUE; 
+            agregados[indiceVertice] = false; 
+        } 
+          
+        // distancia del origen a si mismo es cero siemore
+        distancias[origen] = 0; 
+  
+        // padres guarda el arbol de min distancia
+        int[] padres = new int[nVertices]; 
+  
+        // El origen no tiene padre
+        padres[origen] = NO_PADRE; 
+  
+        // busca el recorrido mas corto para cada vertice
+        for (int i = 1; i < nVertices; i++) { 
+  
+            //toma el vertice de distancia minima de los que aun no son procesados, el mas cercano siempre es igual al inicial en la primera iteracion 
+            int verticeMasCercano = -1; 
+            int distanciaMasCorta = Integer.MAX_VALUE; 
+            for (int indiceVertice = 0; indiceVertice < nVertices; indiceVertice++) { 
+                if (!agregados[indiceVertice] && distancias[indiceVertice] <  distanciaMasCorta) { 
+                    verticeMasCercano = indiceVertice; 
+                    distanciaMasCorta = distancias[indiceVertice]; 
+                } 
+            } 
+  
+            // marca el vertice elegido como procesado
+            agregados[verticeMasCercano] = true;
+  
+            // actualiza la distancia de los vertices adyacentes al procesado
+            for (int indiceVertice = 0; indiceVertice < nVertices; indiceVertice++) { 
+                int edgeDistance = matrizAdyacencia[verticeMasCercano][indiceVertice]; 
+                  
+                if (edgeDistance > 0 && ((distanciaMasCorta + edgeDistance) < distancias[indiceVertice]))  { 
+                    padres[indiceVertice] = verticeMasCercano; 
+                    distancias[indiceVertice] = distanciaMasCorta + edgeDistance; 
+                } 
+            } 
+        }  
+        imprimirSolucion(origen, distancias, padres, destino);
+    } 
+    
+    private static void imprimirSolucion(int origen, int[] distancias, int[] padres, int destino) {
+        System.out.println("\nViaje de "+ ciudadNum(origen) + " a " + ciudadNum(destino));
+        System.out.print("\nDistancia total: " + distancias[destino]+ " kilometros "+ "\nRecorrido: ");
+        imprimeRecorrido(destino,padres);
+    }
+  
+    // Imprime el recorrido mas corto
+    private static void imprimeRecorrido(int destino, int[] padres) { 
+          
+        // estado base: origen no procesado
+        if (destino == NO_PADRE) { 
+            return; 
+        } 
+        imprimeRecorrido(padres[destino], padres); 
+        System.out.print("-->"+ciudadNum(destino) + " "); 
+    }
+
+    
+}
